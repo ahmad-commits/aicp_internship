@@ -9,25 +9,39 @@ def check_frequent_parking(parking_number) -> bool:
             weighted_sum += i * int(parking_number[x])
             i -= 1
             x += 1
-        return (check_digit == (11 - (weighted_sum % 11))) or (check_digit == 0 and (weighted_sum % 11 == 0))
+        return (check_digit == (11 - (weighted_sum % 11))) or (
+            check_digit == 0 and (weighted_sum % 11 == 0)
+        )
     else:
         return False
 
-def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number = "00100"):
-    discount_factor = 1.0
-    discount_eligibility = check_frequent_parking(frequent_parking_number);
+
+def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number="00100"):
+    discount_factor = 0
+    discount_eligibility = check_frequent_parking(frequent_parking_number)
     calculatedFair = 0
     beforeEvening = arrival_hour < 16
     if arrival_hour + parking_time > 24:
         print("Parking time exceeds midnight")
         return -1
+
     if discount_eligibility:
         print("You are eligible for discount!")
         if arrival_hour >= 16:
             discount_factor = 0.5
         else:
             discount_factor = 0.9
-    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    else:
+        print("Frequent Parking Number is Invalid!")
+    days = [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+    ]
     if day.lower() in days:
         match day:
             case "sunday":
@@ -39,18 +53,26 @@ def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number = "0
                 else:
                     hourly_rate = 0
             case _:
-                    hourly_rate = 10
+                hourly_rate = 10
+        if not beforeEvening:
+            hourly_rate = 2
+            calculatedFair = hourly_rate * parking_time
+            return calculatedFair
         if arrival_hour + parking_time > 16 and arrival_hour < 16:
-            after_evening_rate = 2
-            calculatedFair += hourly_rate * (16 - arrival_hour) 
-            calculatedFair += after_evening_rate * (arrival_hour + parking_time - 16)
-        else: 
+            calculatedFair += hourly_rate * (16 - arrival_hour)
+            calculatedFair += 2 * (arrival_hour + parking_time - 16)
+            return calculatedFair
+        else:
             calculatedFair += hourly_rate * parking_time
-        
-        calculatedFair *= discount_factor
-        print(calculatedFair)
+
+        if discount_eligibility:
+            calculatedFair *= discount_factor
+
+        print("Your parking fair is:")
+        return calculatedFair
     else:
         print("Weekday name is invalid")
 
-print(getParkingFair("saturday", 17, 6, "12345"))
+
+print(getParkingFair("sunday", 14, 6, "12345"))
 print(check_frequent_parking("12345"))
