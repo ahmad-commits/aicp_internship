@@ -1,3 +1,15 @@
+import os
+import sys
+from time import sleep
+days = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+]
 def check_frequent_parking(parking_number) -> bool:
     integer_digits = len(parking_number)
     if integer_digits == 5:
@@ -15,10 +27,8 @@ def check_frequent_parking(parking_number) -> bool:
     else:
         return False
 
-
-def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number="00100"):
-    discount_factor = 0
-    discount_eligibility = check_frequent_parking(frequent_parking_number)
+day_total = []
+def calculate_parking_fair(day, arrival_hour, parking_time, discount_eligibility):
     calculatedFair = 0
     beforeEvening = arrival_hour < 16
     if arrival_hour + parking_time > 24:
@@ -31,17 +41,6 @@ def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number="001
             discount_factor = 0.5
         else:
             discount_factor = 0.9
-    else:
-        print("Frequent Parking Number is Invalid!")
-    days = [
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday",
-    ]
     if day.lower() in days:
         match day:
             case "sunday":
@@ -70,25 +69,78 @@ def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number="001
             return calculatedFair
         if arrival_hour + parking_time > 16 and arrival_hour < 16:
             calculatedFair += hourly_rate * (16 - arrival_hour)
+            print(16 - arrival_hour, "hour(s) before 16:00: ", calculatedFair,"$")
             calculatedFair += 2 * (arrival_hour + parking_time - 16)
-            print("Your parking fair is:")
+            print(arrival_hour + parking_time -16, "hour(s) after 16:00: ",  2 * (arrival_hour + parking_time - 16),"$")
+            print("Total Amount: ", calculatedFair, "$")
             if discount_eligibility:
                 calculatedFair *= discount_factor
-
+                print("After applying discount:", calculatedFair,"$")
+            print("Final Amount:")
             return calculatedFair
         else:
             calculatedFair += hourly_rate * parking_time
 
         if discount_eligibility:
             calculatedFair *= discount_factor
-
-        print("Your parking fair is:")
         return calculatedFair
     else:
         print("Weekday name is invalid")
 
+daily_total = 0
 
+def parking_request():
+    input_parking_hour = int(input("Entry hour: "))
+    input_parking_time = int(input("Parking time in hour(s): "))
+    is_frequent_parker = input("Do you have a frequent parking number? (yes/no): ")
+    if is_frequent_parker == "yes":
+        parker_id = input("Frequent Parking Number: ")
+        if not check_frequent_parking(parker_id):
+            return "You entered an invalid Frequent Parking Number"
+        else:
+            global validity
+            validity = True
+    elif is_frequent_parker == "no":
+        validity = False
+    
+    query = calculate_parking_fair(today, input_parking_hour, input_parking_time, validity)
+    print(query)
+    if query != -1:
+        save_prompt = input("Do you want to confirm this ticket (yes/no): ")
+        match save_prompt:
+            case "yes":
+                day_total.append(query)
+            case _:
+                None
+        os.system('clear')
 
+def getTotal():
+    print("Total cash collected today: ", sum(day_total))
+    sys.exit()
 
-print(getParkingFair("sunday", 12, 5, "00000"))
-print(getParkingFair("sunday", 12, 5, "12345"))
+today = input("Day: ")
+while not today.lower() in days:
+    print("Invalid weekday name entered.")
+    today = input("Day: ")
+
+def main():
+    print("Parking Lot Management System")
+    print("1. Parking Request")
+    print("2. End Day")
+    print("3. Exit Program")
+    selection = input("What do you want to do: ")
+    match selection:
+        case "1":
+            parking_request()
+        case "2":
+            getTotal()
+        case "3":
+            sys.exit()
+        case _:
+            print("Invalid Selection")
+            sleep(1)
+            os.system('clear')
+    
+    main()
+            
+main()
