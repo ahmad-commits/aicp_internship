@@ -45,22 +45,36 @@ def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number="001
     if day.lower() in days:
         match day:
             case "sunday":
+                if parking_time > 8:
+                    print("You can't park for more than 8 hours on Sundays")
+                    return -1
                 if beforeEvening:
                     hourly_rate = 2
             case "saturday":
+                if parking_time > 4:
+                    print("You can't park for more than 4 hours on Saturdays")
+                    return -1
                 if beforeEvening:
                     hourly_rate = 3
-                else:
-                    hourly_rate = 0
             case _:
+                if parking_time > 2:
+                    print("Parking for more than 2 hours isn't available on weekdays")
+                    return -1
                 hourly_rate = 10
         if not beforeEvening:
             hourly_rate = 2
             calculatedFair = hourly_rate * parking_time
+            if discount_eligibility:
+                calculatedFair *= discount_factor
+            print("Your parking fair is:")
             return calculatedFair
         if arrival_hour + parking_time > 16 and arrival_hour < 16:
             calculatedFair += hourly_rate * (16 - arrival_hour)
             calculatedFair += 2 * (arrival_hour + parking_time - 16)
+            print("Your parking fair is:")
+            if discount_eligibility:
+                calculatedFair *= discount_factor
+
             return calculatedFair
         else:
             calculatedFair += hourly_rate * parking_time
@@ -74,5 +88,7 @@ def getParkingFair(day, arrival_hour, parking_time, frequent_parking_number="001
         print("Weekday name is invalid")
 
 
-print(getParkingFair("sunday", 14, 6, "12345"))
-print(check_frequent_parking("12345"))
+
+
+print(getParkingFair("sunday", 12, 5, "00000"))
+print(getParkingFair("sunday", 12, 5, "12345"))
