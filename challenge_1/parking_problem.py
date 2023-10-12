@@ -1,6 +1,7 @@
-import os
+from os import system,  name
 import sys
 from time import sleep
+
 days = [
     "monday",
     "tuesday",
@@ -10,6 +11,14 @@ days = [
     "saturday",
     "sunday",
 ]
+
+def clear():
+    if name == 'nt':
+        _ = system('cls')
+    else:
+        _ = system('clear')
+
+
 def check_frequent_parking(parking_number) -> bool:
     integer_digits = len(parking_number)
     if integer_digits == 5:
@@ -27,7 +36,10 @@ def check_frequent_parking(parking_number) -> bool:
     else:
         return False
 
+
 day_total = []
+
+
 def calculate_parking_fair(day, arrival_hour, parking_time, discount_eligibility):
     calculatedFair = 0
     beforeEvening = arrival_hour < 16
@@ -69,13 +81,18 @@ def calculate_parking_fair(day, arrival_hour, parking_time, discount_eligibility
             return calculatedFair
         if arrival_hour + parking_time > 16 and arrival_hour < 16:
             calculatedFair += hourly_rate * (16 - arrival_hour)
-            print(16 - arrival_hour, "hour(s) before 16:00: ", calculatedFair,"$")
+            print(16 - arrival_hour, "hour(s) before 16:00: ", calculatedFair, "$")
             calculatedFair += 2 * (arrival_hour + parking_time - 16)
-            print(arrival_hour + parking_time -16, "hour(s) after 16:00: ",  2 * (arrival_hour + parking_time - 16),"$")
+            print(
+                arrival_hour + parking_time - 16,
+                "hour(s) after 16:00: ",
+                2 * (arrival_hour + parking_time - 16),
+                "$",
+            )
             print("Total Amount: ", calculatedFair, "$")
             if discount_eligibility:
                 calculatedFair *= discount_factor
-                print("After applying discount:", calculatedFair,"$")
+                print("After applying discount:", calculatedFair, "$")
             print("Final Amount:")
             return calculatedFair
         else:
@@ -87,7 +104,9 @@ def calculate_parking_fair(day, arrival_hour, parking_time, discount_eligibility
     else:
         print("Weekday name is invalid")
 
+
 daily_total = 0
+
 
 def parking_request():
     input_parking_hour = int(input("Entry hour: "))
@@ -96,14 +115,18 @@ def parking_request():
     if is_frequent_parker == "yes":
         parker_id = input("Frequent Parking Number: ")
         if not check_frequent_parking(parker_id):
-            return "You entered an invalid Frequent Parking Number"
+            print("You entered an invalid Frequent Parking Number")
+            sleep(2)
+            clear()
+            parking_request()
         else:
-            global validity
             validity = True
     elif is_frequent_parker == "no":
         validity = False
-    
-    query = calculate_parking_fair(today, input_parking_hour, input_parking_time, validity)
+
+    query = calculate_parking_fair(
+        today, input_parking_hour, input_parking_time, validity
+    )
     print(query)
     if query != -1:
         save_prompt = input("Do you want to confirm this ticket (yes/no): ")
@@ -112,16 +135,20 @@ def parking_request():
                 day_total.append(query)
             case _:
                 None
-        os.system('clear')
+        clear()
+        main()
+
 
 def getTotal():
     print("Total cash collected today: ", sum(day_total))
     sys.exit()
 
+
 today = input("Day: ")
 while not today.lower() in days:
     print("Invalid weekday name entered.")
     today = input("Day: ")
+
 
 def main():
     print("Parking Lot Management System")
@@ -139,8 +166,9 @@ def main():
         case _:
             print("Invalid Selection")
             sleep(1)
-            os.system('clear')
-    
+            clear()
+
     main()
-            
+
+
 main()
