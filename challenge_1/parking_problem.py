@@ -79,6 +79,9 @@ def calculate_parking_fair(day, arrival_hour, parking_time, discount_eligibility
                 calculatedFair *= discount_factor
             print("Your parking fair is:")
             return calculatedFair
+        if arrival_hour >= 0 and arrival_hour <=8:
+            print("Parking is not allowed at this time")
+            return - 1
         if arrival_hour + parking_time > 16 and arrival_hour < 16:
             calculatedFair += hourly_rate * (16 - arrival_hour)
             print(16 - arrival_hour, "hour(s) before 16:00: ", calculatedFair, "$")
