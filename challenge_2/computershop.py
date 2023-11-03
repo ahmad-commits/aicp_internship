@@ -172,10 +172,6 @@ def main():
         totalCost = 0
         totalCost += itemsTable(orderList, "Main Order")
         totalCost += itemsTable(addlList, "Additional Items")
-        totalCost = totalCost
-        print(f"╭{'─'*width}╮")
-        print(f"│Total Cost:{' '*(width - len(str(totalCost)) - 12)}{totalCost}$│")
-        print(f"╰{'─'*width}╯")
         if itemsBought >= 1:
             if itemsBought > 1:
                 print(f"You are eligible for 10% discount!")
@@ -187,6 +183,8 @@ def main():
             discountedPrice = round(discountedPrice, 2)
             amountSaved = round(totalCost - discountedPrice, 2)
             print(f"╭{'─'*width}╮")
+            print(f"│Total Cost:{' '*(width - len(str(totalCost)) - 12)}{totalCost}$│")
+
             print(
                 f"│Discounted Price: {' '*(width - len(str(discountedPrice)) - 19)}{discountedPrice}$│"
             )
@@ -201,6 +199,23 @@ def main():
         print(f"╭{'─'*width}╮")
         print(f"│Total Cost:{' '*(width - len(totalCost) - 12)}{totalCost}$│")
         print(f"╰{'─'*width}╯")
+
+    confirmOrder = input("Are you satisfied with this order (yes/no): ")
+    while confirmOrder not in ["yes", "no"]:
+        print("Enter yes or no")
+        confirmOrder = input("Are you satisfied with this order (yes/no): ")
+
+    if confirmOrder == "yes":
+        print("Thank you for your purchase!. We expect you to come again")
+    else:
+        restartOrder = input("Do you want to start from beginning (yes/no): ")
+        while restartOrder not in ["yes", "no"]:
+            print("Enter yes or no")
+            restartOrder = input("Do you want to start from beginning (yes/no): ")
+        if restartOrder == "yes":
+            main()
+        else:
+            print("We regret to see you go.")
 
 
 main()
