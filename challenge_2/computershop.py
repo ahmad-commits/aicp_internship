@@ -43,6 +43,7 @@ def listItems(query, title):
     print(f"╰{'─'*width}╯")
 
 
+
 def itemsTable(itemList, heading):
     totalCost = 0
     print(f"╭{'─'*width}╮\n│{heading}{' '*(width-len(heading))}│\n├{'─'*width}┤")
@@ -59,6 +60,13 @@ def itemsTable(itemList, heading):
     print(f"╰{'─'*width}╯")
     return totalCost
 
+def validateInput(prompt):
+    while True:
+        inpt = input(prompt)
+        if inpt == "yes" or inpt == "no":
+            return inpt
+        else:
+            print("Enter yes or no")
 
 def main():
     orderList = [["basic", "X"]]
@@ -87,10 +95,7 @@ def main():
     print("You chose", inventory["mainHDD"][userHDD][0])
     orderList.append(["mainHDD", userHDD])
     itemsTable(orderList, "You chose these products")
-    addlItems = input("Do you want any additional items (yes/no): ")
-    while addlItems not in ["yes", "no"]:
-        print("Enter yes or no")
-        addlItems = input("Do you want any additional items (yes/no): ")
+    addlItems = validateInput("Do you want any additional items (yes/no):")
     if addlItems == "yes":
         addlList = []
         addlRequest = True
@@ -153,21 +158,14 @@ def main():
             while choice not in inventory[itemCategory]:
                 print(wrongItemCode)
                 choice = input(f"Enter item code of your desired {item}: ")
-            confirmItem = input(f"Add {choice} to your order? (yes/no): ")
-            while confirmItem not in ["yes", "no"]:
-                print("Enter yes or no")
-                confirmItem = input(f"Add {choice} to your order? (yes/no): ")
+            confirmItem = validateInput("Are you sure you want this item (yes/no):")
             if confirmItem == "no":
                 continue
             else:
                 addlList.append([itemCategory, choice])
                 itemsBought += 1
                 print("Item added to your order")
-            continueAddl = input("Do you want any more additional items (yes/no):")
-            while continueAddl not in ["yes", "no"]:
-                print("Enter yes or no")
-                continueAddl = input("Do you want any more additional items (yes/no):")
-
+            continueAddl = validateInput("Do you want any more additional items (yes/no):")
             if continueAddl == "no":
                 addlRequest = False
         totalCost = 0
@@ -201,22 +199,14 @@ def main():
         print(f"│Total Cost:{' '*(width - len(totalCost) - 12)}{totalCost}$│")
         print(f"╰{'─'*width}╯")
 
-    confirmOrder = input("Are you satisfied with this order (yes/no): ")
-    while confirmOrder not in ["yes", "no"]:
-        print("Enter yes or no")
-        confirmOrder = input("Are you satisfied with this order (yes/no): ")
-
+    confirmOrder = validateInput("Are you satisfied with this order (yes/no): ")
     if confirmOrder == "yes":
         print("Thank you for your purchase!. We expect you to come again")
     else:
-        restartOrder = input("Do you want to start from beginning (yes/no): ")
-        while restartOrder not in ["yes", "no"]:
-            print("Enter yes or no")
-            restartOrder = input("Do you want to start from beginning (yes/no): ")
+        restartOrder = validateInput("Do you want to start from beginning (yes/no): ")
         if restartOrder == "yes":
             main()
         else:
             print("We regret to see you go.")
-
 
 main()
