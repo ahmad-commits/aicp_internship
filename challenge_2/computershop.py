@@ -88,6 +88,9 @@ def main():
     orderList.append(["mainHDD", userHDD])
     itemsTable(orderList, "You chose these products")
     addlItems = input("Do you want any additional items (yes/no): ")
+    while addlItems not in ["yes", "no"]:
+        print("Enter yes or no")
+        addlItems = input("Do you want any additional items (yes/no): ")
     if addlItems == "yes":
         addlList = []
         addlRequest = True
@@ -103,14 +106,12 @@ def main():
                 "Optical Drive",
                 "Operating System",
             ]
-            print(
-                f"╭{'─'*width}╮\n│{heading}{' '*(width-len(heading))}│\n├{'─'*width}┤"
-            )
+            print(f"╭{'─'*width}╮\n│{heading}{' '*(width-len(heading))}│")
             i = 1
             for name in itemDescription:
                 spaces = width - len(name) - 2
-                print(f"│{i}.{' '*((1+spaces)//2)}{name}{' '*(spaces//2)}│")
                 print(f"│{'─'*width}│")
+                print(f"│{i}.{' '*((1+spaces)//2)}{name}{' '*(spaces//2)}│")
                 i += 1
             print(f"╰{'─'*(width)}╯")
             categoryNumber = input("Enter item number: ")
