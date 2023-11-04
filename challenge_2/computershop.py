@@ -28,7 +28,7 @@ inventory = {
 }
 width = 50
 
-
+# This function lists the items in the inventory based on the query and title provided
 def listItems(query, title):
     print(f"╭{'─'*width}╮")
     print(f"│{title}{' '*(width-len(title))}│")
@@ -43,6 +43,8 @@ def listItems(query, title):
     print(f"╰{'─'*width}╯")
 
 
+# This function prints a table of the items in the itemList with the provided heading
+# It also calculates and returns the total cost of the items
 def itemsTable(itemList, heading):
     totalCost = 0
     print(f"╭{'─'*width}╮\n│{heading}{' '*(width-len(heading))}│\n├{'─'*width}┤")
@@ -59,7 +61,7 @@ def itemsTable(itemList, heading):
     print(f"╰{'─'*width}╯")
     return totalCost
 
-
+# This function validates the user input to be either 'yes' or 'no'
 def validateInput(prompt):
     while True:
         inpt = input(prompt)
@@ -68,7 +70,7 @@ def validateInput(prompt):
         else:
             print("Enter yes or no")
 
-
+# This is the main function that runs the program
 def main():
     orderList = [["basic", "X"]]
     listItems("case", "Choose from these cases")
