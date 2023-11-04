@@ -111,7 +111,7 @@ def main():
                 "Solid State Drive",
                 "Optical Drive",
                 "Operating System",
-                "Exit"
+                "Back"
             ]
             print(f"╭{'─'*width}╮\n│{heading}{' '*(width-len(heading))}│")
             i = 1
