@@ -43,7 +43,6 @@ def listItems(query, title):
     print(f"╰{'─'*width}╯")
 
 
-
 def itemsTable(itemList, heading):
     totalCost = 0
     print(f"╭{'─'*width}╮\n│{heading}{' '*(width-len(heading))}│\n├{'─'*width}┤")
@@ -60,6 +59,7 @@ def itemsTable(itemList, heading):
     print(f"╰{'─'*width}╯")
     return totalCost
 
+
 def validateInput(prompt):
     while True:
         inpt = input(prompt)
@@ -67,6 +67,7 @@ def validateInput(prompt):
             return inpt
         else:
             print("Enter yes or no")
+
 
 def main():
     orderList = [["basic", "X"]]
@@ -110,6 +111,7 @@ def main():
                 "Solid State Drive",
                 "Optical Drive",
                 "Operating System",
+                "Exit"
             ]
             print(f"╭{'─'*width}╮\n│{heading}{' '*(width-len(heading))}│")
             i = 1
@@ -120,7 +122,7 @@ def main():
                 i += 1
             print(f"╰{'─'*(width)}╯")
             categoryNumber = input("Enter item number: ")
-            while not categoryNumber in ["1", "2", "3", "4", "5", "6", "7"]:
+            while not categoryNumber in ["1", "2", "3", "4", "5", "6", "7", "8"]:
                 print("Error. Enter Correct Item Number from List")
                 categoryNumber = input("Enter item number: ")
             match categoryNumber:
@@ -152,6 +154,8 @@ def main():
                     item = "Operating System"
                     itemCategory = "operatingSystem"
                     listItems(itemCategory, item)
+                case "8":
+                    break
                 case _:
                     print("Error")
             choice = input(f"Enter item code of your desired {item}: ")
@@ -165,7 +169,9 @@ def main():
                 addlList.append([itemCategory, choice])
                 itemsBought += 1
                 print("Item added to your order")
-            continueAddl = validateInput("Do you want any more additional items (yes/no):")
+            continueAddl = validateInput(
+                "Do you want any more additional items (yes/no):"
+            )
             if continueAddl == "no":
                 addlRequest = False
         totalCost = 0
@@ -208,5 +214,6 @@ def main():
             main()
         else:
             print("We regret to see you go.")
+
 
 main()
