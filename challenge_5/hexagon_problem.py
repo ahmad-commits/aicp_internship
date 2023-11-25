@@ -1,4 +1,4 @@
-cnic = "XY30155253"
+cnic = input("Enter last digit of your CNIC: ")
 
 
 def calcArea(id):
