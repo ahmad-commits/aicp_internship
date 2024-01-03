@@ -1,3 +1,3 @@
 # aicp_internship
 
-Solution to Weekly Tasks for the AICP Internship
+Solution to Weekly Problems for the AICP Internship
